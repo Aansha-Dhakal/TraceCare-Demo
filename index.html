@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TraceCare LA — Interactive Prototype</title>
+<title>TraceCare LA — Advanced Interactive Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --teal-900:#0B2E30;
@@ -53,27 +53,35 @@
   .topbar{
     background:var(--teal-900);
     color:var(--white);
-    padding:18px 32px;
+    padding:16px 32px;
     display:flex; align-items:center; justify-content:space-between;
     flex-wrap:wrap; gap:14px;
     border-bottom:3px solid var(--mint);
   }
-  .brand{display:flex; align-items:baseline; gap:10px;}
+  .brand{display:flex; align-items:center; gap:12px;}
   .brand .mark{
     width:34px;height:34px;border-radius:50%;
     background:radial-gradient(circle at 32% 30%, var(--mint), var(--teal-600) 70%);
     display:inline-block; flex:none;
+    box-shadow: 0 0 12px rgba(2,195,154,.4);
   }
   .brand-text{display:flex; flex-direction:column; gap:1px;}
-  .brand-name{font-size:20px; font-weight:600;}
+  .brand-name{font-size:20px; font-weight:700; letter-spacing:-0.01em;}
   .brand-tag{font-size:11px; color:#A9D3CF; letter-spacing:.04em; text-transform:uppercase;}
 
   .protobadge{
-    font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+    font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
     background:rgba(2,195,154,.16); color:var(--mint);
     border:1px solid rgba(2,195,154,.4);
-    padding:5px 10px; border-radius:100px;
+    padding:6px 12px; border-radius:100px;
+    display:flex; align-items:center; gap:6px;
   }
+  .protobadge .pulse{
+    width:7px; height:7px; border-radius:50%; background:var(--mint);
+    box-shadow: 0 0 8px var(--mint);
+    animation: blink 1.6s infinite ease-in-out;
+  }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
   .tabs{
     display:flex; gap:4px;
@@ -92,9 +100,10 @@
     font-family:'JetBrains Mono',monospace; font-size:10.5px; opacity:.7;
   }
   .tab:hover{ color:var(--white); background:rgba(255,255,255,.06);}
-  .tab.active{ background:var(--mint); color:var(--teal-900); }
+  .tab.active{ background:var(--mint); color:var(--teal-900); font-weight:700; }
   .tab .flag{
-    display:none; width:7px; height:7px; border-radius:50%; background:var(--red);
+    display:none; width:8px; height:8px; border-radius:50%; background:var(--red);
+    box-shadow: 0 0 6px var(--red);
   }
   .tab .flag.show{display:inline-block;}
 
@@ -109,7 +118,7 @@
     color:var(--teal-600); margin:0 0 6px;
   }
   .view-title{font-size:30px; font-weight:600; margin:0 0 8px; color:var(--ink);}
-  .view-sub{color:var(--ink-muted); font-size:14.5px; max-width:680px; line-height:1.5; margin:0;}
+  .view-sub{color:var(--ink-muted); font-size:14.5px; max-width:720px; line-height:1.5; margin:0;}
 
   .card{
     background:var(--white); border:1px solid var(--line); border-radius:var(--radius);
@@ -118,23 +127,33 @@
 
   /* ================= VIEW 1: PATIENT CHECK-IN ================= */
   .checkin-grid{
-    display:grid; grid-template-columns:380px 1fr; gap:28px; align-items:start;
+    display:grid; grid-template-columns:390px 1fr; gap:28px; align-items:start;
   }
   @media (max-width:880px){ .checkin-grid{grid-template-columns:1fr;} }
 
+  .mode-switch{
+    display:flex; background:var(--teal-800); padding:3px; border-radius:10px; margin-bottom:12px;
+  }
+  .mode-btn{
+    flex:1; border:none; background:transparent; color:#A9D3CF; padding:6px 10px; font-size:11.5px;
+    font-weight:600; border-radius:7px; transition:all .15s ease; text-align:center;
+  }
+  .mode-btn.active{ background:var(--teal-600); color:var(--white); }
+
   .phone{
-    background:var(--teal-900); border-radius:32px; padding:14px;
-    box-shadow:0 20px 50px rgba(11,46,48,.25);
+    background:var(--teal-900); border-radius:36px; padding:14px;
+    box-shadow:0 20px 50px rgba(11,46,48,.25); position:relative;
   }
   .phone-screen{
-    background:var(--white); border-radius:22px; overflow:hidden;
-    display:flex; flex-direction:column; height:560px;
+    background:var(--white); border-radius:24px; overflow:hidden;
+    display:flex; flex-direction:column; height:580px;
   }
   .phone-head{
     background:var(--teal-800); color:var(--white);
-    padding:14px 16px; display:flex; align-items:center; gap:10px;
-    font-size:13px;
+    padding:14px 16px; display:flex; align-items:center; justify-content:space-between;
+    font-size:12.5px; font-weight:600;
   }
+  .phone-head .status{display:flex; align-items:center; gap:6px;}
   .phone-head .dot{width:8px;height:8px;border-radius:50%;background:var(--mint);}
   .phone-body{
     flex:1; padding:16px; overflow-y:auto;
@@ -148,25 +167,29 @@
   }
   .bubble.sys{
     background:var(--white); border:1px solid var(--line); align-self:flex-start;
-    border-bottom-left-radius:4px; color:var(--ink);
+    border-bottom-left-radius:4px; color:var(--ink); shadow:var(--shadow);
   }
   .bubble.user{
     background:var(--teal-600); color:var(--white); align-self:flex-end;
     border-bottom-right-radius:4px;
   }
-  .qr-row{display:flex; flex-wrap:wrap; gap:8px; align-self:flex-start; max-width:90%;}
+  .bubble.audio-call{
+    background:#EBF7F6; border:1px solid var(--teal-500); color:var(--teal-900);
+    width:100%; max-width:100%; text-align:center; font-style:italic; border-radius:10px;
+  }
+  .qr-row{display:flex; flex-wrap:wrap; gap:8px; align-self:flex-start; max-width:92%; margin-top:4px;}
   .qr{
     border:1.5px solid var(--teal-600); color:var(--teal-600); background:var(--white);
     padding:8px 14px; border-radius:100px; font-size:13px; font-weight:600;
-    transition:background .15s ease, color .15s ease;
+    transition:background .15s ease, color .15s ease, transform .1s ease;
   }
-  .qr:hover{background:var(--teal-600); color:var(--white);}
+  .qr:hover{background:var(--teal-600); color:var(--white); transform:translateY(-1px);}
   .phone-foot{
     padding:12px 16px; border-top:1px solid var(--line); font-size:11px; color:var(--ink-faint);
-    display:flex; justify-content:space-between;
+    display:flex; justify-content:space-between; background:var(--white);
   }
 
-  .result-card{ padding:28px; display:flex; flex-direction:column; gap:22px; min-height:560px; }
+  .result-card{ padding:28px; display:flex; flex-direction:column; gap:22px; min-height:580px; }
   .result-empty{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     text-align:center; flex:1; color:var(--ink-faint); gap:10px; padding:40px 20px;
@@ -198,14 +221,14 @@
   .factor b{color:var(--ink); font-weight:600;}
 
   /* ================= VIEW 2: NAVIGATOR DASHBOARD ================= */
-  .dash-layout{display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;}
+  .dash-layout{display:grid; grid-template-columns:1fr 370px; gap:24px; align-items:start;}
   @media (max-width:960px){ .dash-layout{grid-template-columns:1fr;} }
 
   .filter-row{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
   .chip{
     border:1.5px solid var(--line); background:var(--white); color:var(--ink-muted);
     padding:7px 14px; border-radius:100px; font-size:12.5px; font-weight:600;
-    display:flex; align-items:center; gap:6px;
+    display:flex; align-items:center; gap:6px; transition:all .15s ease;
   }
   .chip .n{
     background:var(--cream); border-radius:100px; padding:1px 7px; font-size:11px;
@@ -247,11 +270,31 @@
   .detail-row span:last-child{font-weight:600;}
   .btn{
     width:100%; padding:11px; border-radius:9px; border:none; font-weight:700; font-size:13.5px;
-    margin-top:14px; display:flex; align-items:center; justify-content:center; gap:8px;
+    margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px;
+    transition:background .15s ease;
   }
   .btn-primary{background:var(--teal-600); color:var(--white);}
   .btn-primary:hover{background:var(--teal-700);}
   .btn-ghost{background:var(--cream); color:var(--teal-700); border:1px solid var(--line);}
+  .btn-ghost:hover{background:#E6F2F0;}
+
+  /* Modal for FHIR Payload */
+  .modal-overlay{
+    display:none; position:fixed; inset:0; background:rgba(15,36,38,0.6); z-index:999;
+    align-items:center; justify-content:center; backdrop-filter:blur(3px);
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    background:var(--white); border-radius:16px; width:90%; max-width:650px; padding:24px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.2); max-height:85vh; display:flex; flex-direction:column;
+  }
+  .modal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .modal-head h3{margin:0; font-size:18px;}
+  .close-modal{border:none; background:transparent; font-size:20px; cursor:pointer; color:var(--ink-muted);}
+  .fhir-code{
+    background:var(--teal-900); color:#76E4D0; font-family:'JetBrains Mono',monospace;
+    padding:16px; border-radius:10px; font-size:12px; overflow-y:auto; flex:1; line-height:1.5;
+  }
 
   /* ================= VIEW 3: TRACELINC ================= */
   .linc-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:24px; align-items:start;}
@@ -260,26 +303,31 @@
   .route-card{padding:22px;}
   .hub-map{
     position:relative; background:var(--cream); border-radius:12px; padding:30px 20px; margin-top:8px;
-    min-height:300px;
+    min-height:320px; overflow:hidden;
   }
   .hub-node{
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-    background:var(--teal-900); color:var(--white); padding:12px 18px; border-radius:10px;
+    background:var(--teal-900); color:var(--white); padding:12px 18px; border-radius:12px;
     font-size:12.5px; font-weight:700; text-align:center; z-index:2; box-shadow:var(--shadow);
+    border:2px solid var(--mint);
   }
   .hub-node small{display:block; font-weight:500; color:#A9D3CF; font-size:10.5px; margin-top:2px;}
   .parish-node{
     position:absolute; background:var(--white); border:1.5px solid var(--line);
     padding:8px 12px; border-radius:9px; font-size:11.5px; font-weight:600; color:var(--ink);
-    z-index:2; box-shadow:0 2px 8px rgba(11,46,48,.08);
+    z-index:2; box-shadow:0 2px 8px rgba(11,46,48,.08); cursor:pointer; transition:all .15s ease;
   }
+  .parish-node:hover{ border-color:var(--teal-600); transform:translate(-50%,-50%) scale(1.05); }
+  .parish-node.active{ border-color:var(--teal-600); background:#EAF6F5; }
   .parish-node .pct{ display:block; font-weight:700; color:var(--teal-600); font-size:13px;}
   svg.routes{position:absolute; inset:0; width:100%; height:100%; z-index:1;}
 
   .trip-list{display:flex; flex-direction:column; gap:12px; margin-top:6px;}
   .trip{
     padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--white);
+    transition:border-color .15s ease;
   }
+  .trip.highlight{ border-color:var(--teal-600); background:#F4FBFA; }
   .trip-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
   .trip-route{font-weight:600; font-size:14px;}
   .trip-time{font-size:12px; color:var(--teal-600); font-weight:700; background:#EAF6F5; padding:3px 9px; border-radius:6px;}
@@ -296,19 +344,20 @@
 
   footer.appfoot{
     text-align:center; padding:24px; color:var(--ink-faint); font-size:11.5px;
-    border-top:1px solid var(--line);
+    border-top:1px solid var(--line); margin-top:auto;
   }
 </style>
 </head>
 <body>
 <div class="shell">
 
+  <!-- ================= TOPBAR ================= -->
   <header class="topbar">
     <div class="brand">
       <span class="mark"></span>
       <div class="brand-text">
         <span class="brand-name">TraceCare LA</span>
-        <span class="brand-tag">Ochsner Health · Interactive Prototype</span>
+        <span class="brand-tag">Ochsner Health · Advanced Interactive Prototype</span>
       </div>
     </div>
     <nav class="tabs" role="tablist" aria-label="Prototype views">
@@ -322,7 +371,7 @@
         <span class="num">03</span> TraceLINC Logistics
       </button>
     </nav>
-    <span class="protobadge">● Live Demo</span>
+    <span class="protobadge"><span class="pulse"></span> Live Interactive POC</span>
   </header>
 
   <main>
@@ -330,35 +379,51 @@
     <!-- ============ VIEW 1: PATIENT CHECK-IN ============ -->
     <section class="view active" id="view-checkin">
       <div class="view-head">
-        <p class="eyebrow">TraceCompanion</p>
+        <p class="eyebrow">TraceCompanion Multimodal Gateway</p>
         <h1 class="view-title">Walk through a real patient check-in</h1>
-        <p class="view-sub">This is what a patient sees over SMS — no app, no login. Answer the three prompts below to run TraceEngine's scoring live, then jump to the Navigator Dashboard to see what the care team sees the moment it happens.</p>
+        <p class="view-sub">Patients complete a 90-second daily check-in via SMS, Automated IVR Voice Call, or Web. Answer the prompts below to calculate the Toxicity Risk Score (TRS) in real time and push the data directly to Ochsner's Navigator Queue.</p>
       </div>
 
       <div class="checkin-grid">
-        <div class="phone">
-          <div class="phone-screen">
-            <div class="phone-head"><span class="dot"></span> TraceCare LA · SMS Check-In</div>
-            <div class="phone-body" id="chatBody">
-              <div class="bubble sys">Hi Mary, this is your Ochsner TraceCare check-in for Day 4 of Cycle 2. On a scale of 0–3, how much nausea are you having today? (0 = none, 3 = severe)</div>
-              <div class="qr-row" id="q1">
-                <button class="qr" data-q="nausea" data-v="0" data-score="0">0 — None</button>
-                <button class="qr" data-q="nausea" data-v="1" data-score="8">1 — Mild</button>
-                <button class="qr" data-q="nausea" data-v="2" data-score="22">2 — Moderate</button>
-                <button class="qr" data-q="nausea" data-v="3" data-score="34">3 — Severe</button>
+        <div>
+          <!-- Multimodal channel selector -->
+          <div class="mode-switch">
+            <button class="mode-btn active" data-mode="sms">📱 SMS Text Flow</button>
+            <button class="mode-btn" data-mode="ivr">📞 Automated Voice (IVR)</button>
+            <button class="mode-btn" data-mode="web">🌐 Patient Web Portal</button>
+          </div>
+
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-head">
+                <span id="channelHeader">TraceCare SMS · Day 4 Cycle 2</span>
+                <span class="status"><span class="dot"></span> Online</span>
+              </div>
+              <div class="phone-body" id="chatBody">
+                <div class="bubble sys" id="initialBubble">Hi Mary, this is your Ochsner TraceCare check-in for Day 4 of Cycle 2. On a scale of 0–3, how much nausea are you having today? (0 = none, 3 = severe)</div>
+                <div class="qr-row" id="q1">
+                  <button class="qr" data-q="nausea" data-v="0" data-score="0">0 — None</button>
+                  <button class="qr" data-q="nausea" data-v="1" data-score="8">1 — Mild</button>
+                  <button class="qr" data-q="nausea" data-v="2" data-score="22">2 — Moderate</button>
+                  <button class="qr" data-q="nausea" data-v="3" data-score="34">3 — Severe</button>
+                </div>
+              </div>
+              <div class="phone-foot">
+                <span id="channelFooter">TraceCompanion Gateway</span>
+                <span id="stepLabel">Question 1 of 3</span>
               </div>
             </div>
-            <div class="phone-foot"><span>TraceCompanion · SMS</span><span id="stepLabel">Question 1 of 3</span></div>
           </div>
         </div>
 
+        <!-- Real-time Scoring Card -->
         <div class="card result-card" id="resultCard">
           <div class="result-empty" id="resultEmpty">
             <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>
-            <p>Answer the check-in on the left.<br>TraceEngine will score the response here in real time.</p>
+            <p>Complete the check-in on the left.<br>TraceEngine will calculate the Toxicity Risk Score here live.</p>
           </div>
           <div id="resultContent" style="display:none;">
-            <p class="eyebrow" style="margin-bottom:2px;">Toxicity Risk Score</p>
+            <p class="eyebrow" style="margin-bottom:2px;">TraceEngine Risk Assessment</p>
             <div class="gauge-wrap">
               <div>
                 <div class="gauge-num" id="gaugeNum">—</div>
@@ -373,7 +438,7 @@
               </svg>
             </div>
             <div class="action-note" id="actionNote"></div>
-            <p class="eyebrow" style="margin:18px 0 0;">What drove this score</p>
+            <p class="eyebrow" style="margin:18px 0 0;">Score Breakdown &amp; Factors</p>
             <div class="factor-list" id="factorList"></div>
           </div>
         </div>
@@ -383,24 +448,25 @@
     <!-- ============ VIEW 2: NAVIGATOR DASHBOARD ============ -->
     <section class="view" id="view-dashboard">
       <div class="view-head">
-        <p class="eyebrow">Ochsner Epic EHR Dashboard</p>
-        <h1 class="view-title">Nurse navigator risk queue</h1>
-        <p class="view-sub">Patients are sorted by Toxicity Risk Score, not appointment time — so the highest-risk patient is always the first thing a navigator sees. Submit a check-in on the previous tab and watch it land here.</p>
+        <p class="eyebrow">Ochsner Epic EHR Navigator Dashboard</p>
+        <h1 class="view-title">Nurse Navigator Risk Triage Queue</h1>
+        <p class="view-sub">Patients are prioritized strictly by Toxicity Risk Score (TRS) rather than static clinic schedules, placing acute side-effect risks directly at the top of the care navigator's view.</p>
       </div>
 
       <div class="dash-layout">
         <div>
           <div class="filter-row" id="filterRow">
-            <button class="chip active" data-filter="all">All patients <span class="n" id="cnt-all">6</span></button>
-            <button class="chip" data-filter="red">🔴 Red <span class="n" id="cnt-red">1</span></button>
-            <button class="chip" data-filter="amber">🟠 Amber <span class="n" id="cnt-amber">2</span></button>
-            <button class="chip" data-filter="green">🟢 Green <span class="n" id="cnt-green">3</span></button>
+            <button class="chip active" data-filter="all">All Patients <span class="n" id="cnt-all">6</span></button>
+            <button class="chip" data-filter="red">🔴 Red Zone <span class="n" id="cnt-red">1</span></button>
+            <button class="chip" data-filter="amber">🟠 Amber Zone <span class="n" id="cnt-amber">2</span></button>
+            <button class="chip" data-filter="green">🟢 Green Zone <span class="n" id="cnt-green">3</span></button>
           </div>
           <div class="queue" id="queue"></div>
         </div>
 
+        <!-- Detail Card -->
         <div class="card detail-card" id="detailCard">
-          <div class="detail-empty">Select a patient to view their full toxicity trend, symptom log, and transportation status.</div>
+          <div class="detail-empty">Select a patient from the queue to view clinical trends, symptom logs, and transportation status.</div>
         </div>
       </div>
     </section>
@@ -408,26 +474,26 @@
     <!-- ============ VIEW 3: TRACELINC ============ -->
     <section class="view" id="view-linc">
       <div class="view-head">
-        <p class="eyebrow">TraceLINC</p>
-        <h1 class="view-title">Logistics &amp; SDOH coordination</h1>
-        <p class="view-sub">Rural appointments are batched into shared trips toward the nearest Ochsner hub, and matched to NEMT or Medicaid ride providers automatically — so a missed ride never means a missed treatment.</p>
+        <p class="eyebrow">TraceLINC Logistics Engine</p>
+        <h1 class="view-title">Batched Rural Transportation &amp; SDOH Support</h1>
+        <p class="view-sub">TraceLINC identifies rural patients traveling to Ochsner regional hubs (e.g., Baton Rouge) and groups them into shared NEMT or Medicaid shuttles to eliminate missed oncology appointments.</p>
       </div>
 
       <div class="linc-grid">
         <div class="card route-card">
-          <h3 style="margin:0 0 4px; font-size:16px;">This week's batched routes</h3>
-          <p style="margin:0; font-size:12.5px; color:var(--ink-faint);">Rural parishes routed into Ochsner Baton Rouge</p>
+          <h3 style="margin:0 0 4px; font-size:16px;">Louisiana Parish Transit Map</h3>
+          <p style="margin:0; font-size:12.5px; color:var(--ink-faint);">Click a parish node to filter active batched trips to Ochsner Hubs.</p>
           <div class="hub-map" id="hubMap">
             <svg class="routes" id="routeSvg"></svg>
-            <div class="hub-node">OCHSNER<br><small>Baton Rouge Hub</small></div>
+            <div class="hub-node">OCHSNER HUB<br><small>Baton Rouge, LA</small></div>
           </div>
         </div>
 
         <div>
           <div class="card" style="padding:20px;">
-            <h3 style="margin:0 0 12px; font-size:15px;">Scheduled trips</h3>
-            <div class="trip-list">
-              <div class="trip">
+            <h3 style="margin:0 0 12px; font-size:15px;">Active Scheduled Trips</h3>
+            <div class="trip-list" id="tripList">
+              <div class="trip" data-parish="East Feliciana">
                 <div class="trip-top"><span class="trip-route">East Feliciana → Baton Rouge</span><span class="trip-time">7:15 AM</span></div>
                 <div class="trip-riders">
                   <span class="rider-chip">Mary D.</span>
@@ -435,15 +501,15 @@
                 </div>
                 <div class="trip-provider">NEMT Provider · Parish Transit Van 4</div>
               </div>
-              <div class="trip">
-                <div class="trip-top"><span class="trip-route">Tensas → Baton Rouge</span><span class="trip-time">8:00 AM</span></div>
+              <div class="trip" data-parish="Tensas">
+                <div class="trip-top"><span class="trip-route">Tensas Parish → Baton Rouge</span><span class="trip-time">8:00 AM</span></div>
                 <div class="trip-riders">
                   <span class="rider-chip">Odell R.</span>
                 </div>
                 <div class="trip-provider">Medicaid Ride Partner</div>
               </div>
-              <div class="trip">
-                <div class="trip-top"><span class="trip-route">Beauregard → Baton Rouge</span><span class="trip-time">6:45 AM</span></div>
+              <div class="trip" data-parish="Beauregard">
+                <div class="trip-top"><span class="trip-route">Beauregard Parish → Baton Rouge</span><span class="trip-time">6:45 AM</span></div>
                 <div class="trip-riders">
                   <span class="rider-chip">Angela F.</span>
                   <span class="rider-chip">Sam K.</span>
@@ -455,9 +521,9 @@
           </div>
 
           <div class="stat-strip">
-            <div class="stat-box"><div class="n">11</div><div class="l">round trips saved this week via batching</div></div>
-            <div class="stat-box"><div class="n">4</div><div class="l">parishes covered by this route</div></div>
-            <div class="stat-box"><div class="n">0</div><div class="l">missed cycles from no-show transport</div></div>
+            <div class="stat-box"><div class="n" id="statTrips">11</div><div class="l">round trips saved this week via batching</div></div>
+            <div class="stat-box"><div class="n">4</div><div class="l">rural parishes covered</div></div>
+            <div class="stat-box"><div class="n">0%</div><div class="l">no-show rate from transit gaps</div></div>
           </div>
         </div>
       </div>
@@ -465,11 +531,27 @@
 
   </main>
 
-  <footer class="appfoot">TraceCare LA — Interactive Prototype for the Ochsner Health Cancer Care &amp; Prevention Challenge. All patient data shown is synthetic demo data.</footer>
+  <footer class="appfoot">
+    TraceCare LA — Interactive Prototype for Nexus Dev Days / Ochsner Health Cancer Care &amp; Prevention Challenge. Synthetic demonstration data.
+  </footer>
+</div>
+
+<!-- FHIR EHR PAYLOAD MODAL -->
+<div class="modal-overlay" id="fhirModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Epic EHR Integration — HL7/FHIR Payload</h3>
+      <button class="close-modal" id="closeModal">&times;</button>
+    </div>
+    <p style="font-size:12.5px; color:var(--ink-muted); margin-top:0;">
+      Real-time FHIR JSON resource generated by TraceEngine and dispatched to Ochsner's Epic EHR API:
+    </p>
+    <pre class="fhir-code" id="fhirContent"></pre>
+  </div>
 </div>
 
 <script>
-/* ---------------- Tab switching ---------------- */
+/* ---------------- Tab Switching ---------------- */
 const tabs = document.querySelectorAll('.tab');
 const views = document.querySelectorAll('.view');
 tabs.forEach(t => t.addEventListener('click', () => {
@@ -477,9 +559,50 @@ tabs.forEach(t => t.addEventListener('click', () => {
   t.classList.add('active'); t.setAttribute('aria-selected','true');
   views.forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + t.dataset.view).classList.add('active');
+  if(t.dataset.view === 'linc') setTimeout(drawHubMap, 50);
 }));
 
-/* ---------------- Check-in flow ---------------- */
+/* ---------------- Multimodal Gateway Handling ---------------- */
+let currentMode = 'sms';
+const modeBtns = document.querySelectorAll('.mode-btn');
+modeBtns.forEach(btn => btn.addEventListener('click', () => {
+  modeBtns.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentMode = btn.dataset.mode;
+  resetCheckinUI();
+}));
+
+function resetCheckinUI(){
+  const header = document.getElementById('channelHeader');
+  const footer = document.getElementById('channelFooter');
+  const chatBody = document.getElementById('chatBody');
+  
+  chatBody.innerHTML = '';
+  stepIndex = 0;
+  running = 0;
+  answers = {};
+  stepLabel.textContent = 'Question 1 of 3';
+
+  if(currentMode === 'sms'){
+    header.textContent = 'TraceCare SMS · Day 4 Cycle 2';
+    footer.textContent = 'TraceCompanion Gateway (SMS)';
+    addBubble("Hi Mary, this is your Ochsner TraceCare check-in for Day 4 of Cycle 2. On a scale of 0–3, how much nausea are you having today? (0 = none, 3 = severe)", 'sys');
+    renderQOptions(steps[0]);
+  } else if(currentMode === 'ivr'){
+    header.textContent = 'TraceCare IVR Voice Call';
+    footer.textContent = 'TraceCompanion IVR Engine';
+    addBubble("🔊 [Automated Call Connected]: 'Hello Mary. Press 0 for no nausea, 1 for mild, 2 for moderate, or 3 for severe.'", 'audio-call');
+    renderQOptions(steps[0]);
+  } else {
+    header.textContent = 'TraceCare Web Portal';
+    footer.textContent = 'TraceCompanion Web Gateway';
+    addBubble("Welcome back, Mary. Please update your symptom log for today.", 'sys');
+    addBubble("Question 1: On a scale of 0–3, how much nausea are you experiencing today?", 'sys');
+    renderQOptions(steps[0]);
+  }
+}
+
+/* ---------------- Interactive Check-in Logic ---------------- */
 const chatBody = document.getElementById('chatBody');
 const stepLabel = document.getElementById('stepLabel');
 let answers = {};
@@ -488,29 +611,48 @@ let running = 0;
 const steps = [
   {
     key:'nausea',
-    prompt:null, // already in HTML as first question
+    options:[
+      {label:"0 — None", score:0},
+      {label:"1 — Mild", score:8},
+      {label:"2 — Moderate", score:22},
+      {label:"3 — Severe", score:34},
+    ]
   },
   {
     key:'fever',
-    prompt:"Thanks. Have you had a fever above 100.4°F (38°C) today?",
+    prompt:"Have you recorded a temperature over 100.4°F (38°C) today?",
     options:[
-      {label:"Yes", score:30},
-      {label:"No", score:0},
+      {label:"Yes (Fever present)", score:30},
+      {label:"No fever", score:0},
     ]
   },
   {
     key:'energy',
-    prompt:"Got it. Compared to yesterday, how is your energy and appetite?",
+    prompt:"Compared to yesterday, how is your overall energy and food intake?",
     options:[
-      {label:"Better", score:0},
-      {label:"About the same", score:5},
-      {label:"Worse", score:18},
+      {label:"Normal / Good", score:0},
+      {label:"Slightly tired", score:5},
+      {label:"Very weak / Poor intake", score:18},
     ]
   }
 ];
 let stepIndex = 0;
 
-document.getElementById('q1').addEventListener('click', handleQR);
+function renderQOptions(step){
+  const row = document.createElement('div');
+  row.className = 'qr-row';
+  step.options.forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'qr';
+    b.dataset.q = step.key;
+    b.dataset.score = opt.score;
+    b.textContent = opt.label;
+    b.addEventListener('click', handleQR);
+    row.appendChild(b);
+  });
+  chatBody.appendChild(row);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
 
 function handleQR(e){
   const btn = e.target.closest('.qr');
@@ -520,11 +662,10 @@ function handleQR(e){
   running += score;
   answers[btn.dataset.q] = {label, score};
 
-  // remove quick replies, add user bubble
   const qrRow = btn.closest('.qr-row');
-  qrRow.remove();
-  addBubble(label, 'user');
+  if(qrRow) qrRow.remove();
 
+  addBubble(label, 'user');
   advance();
 }
 
@@ -542,50 +683,40 @@ function advance(){
     const s = steps[stepIndex];
     stepLabel.textContent = 'Question ' + (stepIndex+1) + ' of 3';
     setTimeout(() => {
-      addBubble(s.prompt, 'sys');
-      const row = document.createElement('div');
-      row.className = 'qr-row';
-      s.options.forEach(opt => {
-        const b = document.createElement('button');
-        b.className = 'qr';
-        b.dataset.q = s.key;
-        b.dataset.score = opt.score;
-        b.textContent = opt.label;
-        b.addEventListener('click', handleQR);
-        row.appendChild(b);
-      });
-      chatBody.appendChild(row);
-      chatBody.scrollTop = chatBody.scrollHeight;
+      const promptText = currentMode === 'ivr' ? `🔊 [IVR Prompt]: '${s.prompt}'` : s.prompt;
+      addBubble(promptText, currentMode === 'ivr' ? 'audio-call' : 'sys');
+      renderQOptions(s);
     }, 350);
   } else {
     stepLabel.textContent = 'Complete';
     setTimeout(() => {
-      addBubble("Thanks, Mary — reviewing your check-in now.", 'sys');
+      const endText = currentMode === 'ivr' ? "🔊 [Call Complete]: 'Thank you Mary, your check-in has been logged with your care team.'" : "Thanks Mary — reviewing your responses now.";
+      addBubble(endText, currentMode === 'ivr' ? 'audio-call' : 'sys');
       finishCheckin();
     }, 400);
   }
 }
 
 function finishCheckin(){
-  const score = Math.min(100, running);
+  const score = Math.min(100, running + 12); // Base baseline factor added
   document.getElementById('resultEmpty').style.display = 'none';
   const content = document.getElementById('resultContent');
   content.style.display = 'block';
 
   document.getElementById('gaugeNum').textContent = score;
 
-  let zone, zoneClass, angle, noteHtml, noteStyle;
+  let zone, zoneClass, noteHtml, noteStyle;
   if(score < 40){
-    zone = 'Green zone'; zoneClass='zone-green';
-    noteHtml = "<b>No action needed.</b> Response logged. Mary will be checked on again tomorrow at the same time.";
+    zone = 'Green Zone'; zoneClass='zone-green';
+    noteHtml = "<b>Routine Status:</b> Symptoms within manageable limits. Next automated check-in scheduled for tomorrow.";
     noteStyle = "background:var(--green-bg); border-color:#BFE3D0; color:#276749;";
   } else if(score < 70){
-    zone = 'Amber zone'; zoneClass='zone-amber';
-    noteHtml = "<b>Nurse Navigator notified.</b> A callback is queued within 24 hours. Mary now appears at the top of the Navigator Dashboard queue.";
+    zone = 'Amber Zone'; zoneClass='zone-amber';
+    noteHtml = "<b>Nurse Alert Queued:</b> Elevated side-effects detected. Queued for 24-hour Nurse Navigator callback.";
     noteStyle = "background:var(--amber-bg); border-color:#F0DBA6; color:#8A5A16;";
   } else {
-    zone = 'Red zone'; zoneClass='zone-red';
-    noteHtml = "<b>Immediate escalation triggered.</b> An Ochsner Nurse Navigator has been paged in real time — before this becomes an ED visit.";
+    zone = 'Red Zone (Acute Risk)'; zoneClass='zone-red';
+    noteHtml = "<b>Immediate Escalation:</b> High neutropenic/dehydration risk. Priority alert sent to Ochsner Nurse Navigator.";
     noteStyle = "background:var(--red-bg); border-color:#F0C3BE; color:#8C2E27;";
   }
 
@@ -597,14 +728,12 @@ function finishCheckin(){
   note.innerHTML = noteHtml;
   note.setAttribute('style', "padding:14px 16px; border-radius:10px; font-size:13.5px; line-height:1.5; border:1px solid; " + noteStyle);
 
-  // needle: 0 -> -90deg, 100 -> +90deg
-  angle = -90 + (score/100)*180;
+  const angle = -90 + (score/100)*180;
   document.getElementById('needle').style.transform = 'rotate(' + angle + 'deg)';
 
-  // factor list
   const fl = document.getElementById('factorList');
-  fl.innerHTML = '';
-  const labels = {nausea:'Nausea', fever:'Fever', energy:'Energy / appetite'};
+  fl.innerHTML = '<div class="factor"><span>Baseline Clinical Risk</span><b>+12 pts</b></div>';
+  const labels = {nausea:'Nausea Score', fever:'Fever Reported', energy:'Energy & Appetite'};
   Object.keys(answers).forEach(k => {
     const row = document.createElement('div');
     row.className = 'factor';
@@ -612,21 +741,20 @@ function finishCheckin(){
     fl.appendChild(row);
   });
 
-  // If amber/red, inject into navigator dashboard queue
   if(score >= 40){
     injectPatient(score);
     document.getElementById('dashFlag').classList.add('show');
   }
 }
 
-/* ---------------- Navigator Dashboard ---------------- */
+/* ---------------- Navigator Queue Logic ---------------- */
 const basePatients = [
-  {id:1, name:'Odell Robichaux', parish:'Tensas Parish', trs:78, last:'2 hrs ago', notes:['Grade 3 diarrhea reported','Weight down 4 lbs since last check-in','On Cycle 3 of FOLFOX'], transport:'Ride confirmed for Thu 8:00 AM'},
-  {id:2, name:'Angela Fontenot', parish:'Beauregard Parish', trs:58, last:'5 hrs ago', notes:['Mild fatigue, appetite stable','No fever reported','On Cycle 2 of AC-T'], transport:'Batched with 2 other riders — Thu 6:45 AM'},
-  {id:3, name:'Sam Kowalski', parish:'Beauregard Parish', trs:44, last:'Yesterday', notes:['Nausea improving on antiemetics','Sleeping well'], transport:'Batched with 2 other riders — Thu 6:45 AM'},
-  {id:4, name:'Rita Meaux', parish:'Beauregard Parish', trs:22, last:'Yesterday', notes:['No new symptoms','Energy normal'], transport:'Batched with 2 other riders — Thu 6:45 AM'},
-  {id:5, name:'Wilson Prejean', parish:'East Feliciana Parish', trs:15, last:'2 days ago', notes:['Routine check-in, no concerns'], transport:'Ride confirmed for Thu 7:15 AM'},
-  {id:6, name:'Denise Arceneaux', parish:'East Feliciana Parish', trs:9, last:'2 days ago', notes:['Routine check-in, no concerns'], transport:'No trip scheduled this week'},
+  {id:1, name:'Odell Robichaux', parish:'Tensas Parish', trs:78, last:'2 hrs ago', notes:['Severe diarrhea reported','Weight down 4 lbs since last visit','Cycle 3 FOLFOX'], transport:'Ride confirmed · Thu 8:00 AM'},
+  {id:2, name:'Angela Fontenot', parish:'Beauregard Parish', trs:58, last:'5 hrs ago', notes:['Moderate fatigue, appetite down','No fever reported','Cycle 2 AC-T'], transport:'Batched Shuttle · Thu 6:45 AM'},
+  {id:3, name:'Sam Kowalski', parish:'Beauregard Parish', trs:44, last:'Yesterday', notes:['Nausea managed with antiemetics','Sleeping well'], transport:'Batched Shuttle · Thu 6:45 AM'},
+  {id:4, name:'Rita Meaux', parish:'Beauregard Parish', trs:22, last:'Yesterday', notes:['No new complaints','Appetite good'], transport:'Batched Shuttle · Thu 6:45 AM'},
+  {id:5, name:'Wilson Prejean', parish:'East Feliciana Parish', trs:15, last:'2 days ago', notes:['Routine check-in clear'], transport:'Ride confirmed · Thu 7:15 AM'},
+  {id:6, name:'Denise Arceneaux', parish:'East Feliciana Parish', trs:9, last:'2 days ago', notes:['Routine check-in clear'], transport:'No transit needed'},
 ];
 let patients = [...basePatients];
 let selectedId = null;
@@ -640,8 +768,8 @@ function initials(name){ return name.split(' ').map(n=>n[0]).slice(0,2).join('')
 function injectPatient(score){
   const newP = {
     id: 99, name:'Mary Duplessis', parish:'East Feliciana Parish', trs:score,
-    last:'Just now', notes:['New check-in flagged nausea, fever, and low energy','Auto-escalated by TraceEngine'],
-    transport:'Batched with 1 other rider — Thu 7:15 AM', isNew:true
+    last:'Just now', notes:['Check-in flagged nausea, fever risk, and fatigue','Auto-routed by TraceEngine'],
+    transport:'Batched Shuttle · Thu 7:15 AM', isNew:true
   };
   patients = patients.filter(p => p.id !== 99);
   patients.unshift(newP);
@@ -683,29 +811,29 @@ function renderDetail(p){
   const z = zoneOf(p.trs);
   const c = zoneColor(z);
   const card = document.getElementById('detailCard');
-  const trend = p.id===99 ? [12,18,20,p.trs] : [Math.max(5,p.trs-20), Math.max(5,p.trs-10), Math.max(5,p.trs-4), p.trs];
+  const trend = p.id===99 ? [12,18,24,p.trs] : [Math.max(5,p.trs-22), Math.max(5,p.trs-12), Math.max(5,p.trs-4), p.trs];
 
   card.innerHTML = `
     <div class="detail-head">
       <div class="avatar" style="background:${avatarColor(z)}; width:48px; height:48px; font-size:16px;">${initials(p.name)}</div>
       <div>
         <div class="detail-name">${p.name}</div>
-        <div class="detail-sub">${p.parish} · Last check-in ${p.last}</div>
+        <div class="detail-sub">${p.parish} · Check-in: ${p.last}</div>
       </div>
     </div>
-    <div class="trs-badge" style="background:${c.bg}; color:${c.fg}; display:inline-block; font-size:18px; padding:8px 14px;">TRS ${p.trs}</div>
-    <p style="font-size:11.5px; color:var(--ink-faint); margin:10px 0 0; text-transform:uppercase; letter-spacing:.04em; font-weight:700;">4-check-in trend</p>
+    <div class="trs-badge" style="background:${c.bg}; color:${c.fg}; display:inline-block; font-size:18px; padding:8px 14px;">TRS ${p.trs} / 100</div>
+    <p style="font-size:11.5px; color:var(--ink-faint); margin:12px 0 0; text-transform:uppercase; letter-spacing:.04em; font-weight:700;">Recent Toxicity Score Trend</p>
     <svg class="spark" viewBox="0 0 240 64" preserveAspectRatio="none">
       <polyline points="${trend.map((v,i)=>`${i*80},${64 - (v/100)*60}`).join(' ')}" fill="none" stroke="${c.fg}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       ${trend.map((v,i)=>`<circle cx="${i*80}" cy="${64-(v/100)*60}" r="3.5" fill="${c.fg}"/>`).join('')}
     </svg>
-    <p style="font-size:11.5px; color:var(--ink-faint); margin:12px 0 4px; text-transform:uppercase; letter-spacing:.04em; font-weight:700;">Symptom log</p>
+    <p style="font-size:11.5px; color:var(--ink-faint); margin:12px 0 4px; text-transform:uppercase; letter-spacing:.04em; font-weight:700;">Symptom Log</p>
     <div class="factor-list">
       ${p.notes.map(n => `<div class="factor" style="justify-content:flex-start;">${n}</div>`).join('')}
     </div>
-    <div class="detail-row"><span>Transportation</span><span>${p.transport}</span></div>
-    <button class="btn btn-primary">📞 Call ${p.name.split(' ')[0]} now</button>
-    <button class="btn btn-ghost">Open full chart in Epic</button>
+    <div class="detail-row"><span>Logistics / Ride</span><span>${p.transport}</span></div>
+    <button class="btn btn-primary">📞 Call ${p.name.split(' ')[0]} Now</button>
+    <button class="btn btn-ghost" onclick="showFhirModal('${p.name}', ${p.trs})">⚡ View Epic FHIR JSON Payload</button>
   `;
 }
 
@@ -720,35 +848,93 @@ document.getElementById('filterRow').addEventListener('click', (e) => {
 
 renderQueue();
 
-/* ---------------- TraceLINC map ---------------- */
+/* ---------------- FHIR EHR Modal ---------------- */
+function showFhirModal(name, trs){
+  const modal = document.getElementById('fhirModal');
+  const code = document.getElementById('fhirContent');
+  const fhirPayload = {
+    "resourceType": "Observation",
+    "id": "tracecare-trs-" + Math.floor(Math.random()*10000),
+    "status": "final",
+    "category": [{
+      "coding": [{
+        "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+        "code": "survey",
+        "display": "Survey Toxicity Assessment"
+      }]
+    }],
+    "code": {
+      "coding": [{
+        "system": "http://loinc.org",
+        "code": "88040-1",
+        "display": "Oncology Toxicity Risk Score"
+      }]
+    },
+    "subject": { "display": name },
+    "effectiveDateTime": new Date().toISOString(),
+    "valueInteger": trs,
+    "interpretation": [{
+      "coding": [{
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+        "code": trs >= 70 ? "H" : trs >= 40 ? "A" : "N",
+        "display": trs >= 70 ? "High Risk Escalation" : trs >= 40 ? "Amber Warning" : "Normal Routine"
+      }]
+    }]
+  };
+  code.textContent = JSON.stringify(fhirPayload, null, 2);
+  modal.classList.add('open');
+}
+
+document.getElementById('closeModal').addEventListener('click', () => {
+  document.getElementById('fhirModal').classList.remove('open');
+});
+
+/* ---------------- TraceLINC Map ---------------- */
 function drawHubMap(){
   const map = document.getElementById('hubMap');
   const svg = document.getElementById('routeSvg');
+  if(!map || !svg) return;
   const w = map.clientWidth, h = map.clientHeight;
   const cx = w/2, cy = h/2;
   const parishes = [
-    {name:'East Feliciana', pct:'2 riders', ang:200},
+    {name:'East Feliciana', pct:'2 riders', ang:195},
     {name:'Tensas', pct:'1 rider', ang:260},
-    {name:'Beauregard', pct:'3 riders', ang:325},
+    {name:'Beauregard', pct:'3 riders', ang:330},
   ];
   document.querySelectorAll('.parish-node').forEach(n=>n.remove());
   let lines = '';
   parishes.forEach(p => {
     const rad = p.ang * Math.PI/180;
-    const dist = Math.min(w,h) * 0.42;
+    const dist = Math.min(w,h) * 0.40;
     const x = cx + dist*Math.cos(rad);
     const y = cy + dist*Math.sin(rad);
-    lines += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#00A896" stroke-width="2" stroke-dasharray="5,5"/>`;
+    lines += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#00A896" stroke-width="2.5" stroke-dasharray="6,4"/>`;
     const node = document.createElement('div');
     node.className = 'parish-node';
     node.style.left = x + 'px';
     node.style.top = y + 'px';
     node.style.transform = 'translate(-50%,-50%)';
     node.innerHTML = `${p.name}<span class="pct">${p.pct}</span>`;
+    node.addEventListener('click', () => highlightParishTrips(p.name, node));
     map.appendChild(node);
   });
   svg.innerHTML = lines;
 }
+
+function highlightParishTrips(parishName, nodeElem){
+  document.querySelectorAll('.parish-node').forEach(n => n.classList.remove('active'));
+  nodeElem.classList.add('active');
+  const trips = document.querySelectorAll('.trip');
+  trips.forEach(t => {
+    if(t.dataset.parish === parishName){
+      t.classList.add('highlight');
+      t.scrollIntoView({behavior:'smooth', block:'nearest'});
+    } else {
+      t.classList.remove('highlight');
+    }
+  });
+}
+
 window.addEventListener('load', drawHubMap);
 window.addEventListener('resize', drawHubMap);
 </script>
