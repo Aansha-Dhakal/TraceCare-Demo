@@ -131,14 +131,14 @@
 
   /* Mode 2: IVR Voice Call UI */
   .ivr-view{display:none; flex-direction:column; height:100%; background:#0B1E20; color:var(--white); padding:20px; align-items:center; justify-content:space-between; text-align:center;}
-  .ivr-avatar{width:70px; height:70px; border-radius:50%; background:var(--teal-600); display:flex; align-items:center; justify-content:center; font-size:28px; margin-top:10px; box-shadow:0 0 20px rgba(2,195,154,.3);}
-  .wave-box{display:flex; gap:4px; height:24px; align-items:center; margin:10px 0;}
+  .ivr-avatar{width:64px; height:64px; border-radius:50%; background:var(--teal-600); display:flex; align-items:center; justify-content:center; font-size:26px; margin-top:5px; box-shadow:0 0 20px rgba(2,195,154,.3);}
+  .wave-box{display:flex; gap:4px; height:20px; align-items:center; margin:8px 0;}
   .wave-bar{width:4px; height:100%; background:var(--mint); border-radius:4px; animation: wave 1s infinite ease-in-out;}
   .wave-bar:nth-child(2){animation-delay:0.2s;} .wave-bar:nth-child(3){animation-delay:0.4s;} .wave-bar:nth-child(4){animation-delay:0.1s;}
-  @keyframes wave { 0%,100%{height:6px;} 50%{height:24px;} }
-  .ivr-transcript{background:rgba(255,255,255,.08); padding:12px; border-radius:12px; font-size:12.5px; color:#D0E6E4; line-height:1.4; max-width:90%; min-height:64px;}
-  .keypad-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; width:100%; max-width:240px; margin-bottom:10px;}
-  .key-btn{background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--white); padding:12px; border-radius:12px; font-size:14px; font-weight:700;}
+  @keyframes wave { 0%,100%{height:6px;} 50%{height:20px;} }
+  .ivr-transcript{background:rgba(255,255,255,.08); padding:10px; border-radius:12px; font-size:12px; color:#D0E6E4; line-height:1.35; max-width:95%; min-height:56px;}
+  .keypad-grid{display:flex; flex-wrap:wrap; gap:8px; width:100%; justify-content:center; margin-bottom:10px;}
+  .key-btn{background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--white); padding:10px 12px; border-radius:10px; font-size:13px; font-weight:700; flex:1; min-width:80px;}
   .key-btn:hover{background:var(--mint); color:var(--teal-900);}
 
   /* Mode 3: Patient Web Portal UI */
@@ -187,13 +187,15 @@
   /* Logistics View */
   .linc-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:24px;}
   @media (max-width:960px){ .linc-grid{grid-template-columns:1fr;} }
-  .hub-map{position:relative; background:var(--cream); border-radius:12px; padding:30px 20px; min-height:320px;}
-  .hub-node{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:var(--teal-900); color:var(--white); padding:12px 18px; border-radius:12px; font-size:12.5px; font-weight:700; text-align:center;}
-  .parish-node{position:absolute; background:var(--white); border:1.5px solid var(--line); padding:8px 12px; border-radius:9px; font-size:11.5px; font-weight:600;}
-  svg.routes{position:absolute; inset:0; width:100%; height:100%;}
+  .hub-map{position:relative; background:var(--cream); border-radius:12px; padding:30px 20px; min-height:320px; overflow:hidden;}
+  .hub-node{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:var(--teal-900); color:var(--white); padding:12px 18px; border-radius:12px; font-size:12.5px; font-weight:700; text-align:center; z-index:2; border:2px solid var(--mint);}
+  .parish-node{position:absolute; background:var(--white); border:2px solid var(--teal-600); padding:8px 14px; border-radius:10px; font-size:12px; font-weight:700; color:var(--teal-900); z-index:5; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:all .2s ease;}
+  .parish-node:hover{ background:var(--mint); color:var(--teal-900); transform:translate(-50%,-50%) scale(1.1); }
+  .parish-node.active{ background:var(--mint); color:var(--teal-900); border-color:var(--teal-900); box-shadow:0 0 15px rgba(2,195,154,0.6); }
+  svg.routes{position:absolute; inset:0; width:100%; height:100%; z-index:1;}
   .trip-list{display:flex; flex-direction:column; gap:12px;}
-  .trip{padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--white);}
-  .trip.highlight{ border-color:var(--teal-600); background:#F4FBFA; }
+  .trip{padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--white); transition:all .2s ease;}
+  .trip.highlight{ border:2px solid var(--teal-600); background:#EAF6F5; transform:scale(1.02); }
   .stat-strip{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px;}
   .stat-box{padding:16px; border-radius:12px; background:var(--teal-900); color:var(--white);}
   .stat-box .n{font-family:'Fraunces',serif; font-size:26px; font-weight:600; color:var(--mint);}
@@ -260,12 +262,12 @@
                 <div>
                   <div style="font-size:11px; text-transform:uppercase; color:var(--mint); font-weight:700;">Active Ochsner Voice Triage</div>
                   <div class="ivr-avatar">📞</div>
-                  <h3 style="margin:8px 0 2px; font-size:16px;">TraceCare AI Voice Companion</h3>
-                  <div style="font-size:12px; color:#A9D3CF;" id="ivrTimer">00:08</div>
+                  <h3 style="margin:6px 0 2px; font-size:15px;">TraceCare AI Voice Companion</h3>
+                  <div style="font-size:11px; color:#A9D3CF;">Call Duration 00:08</div>
                 </div>
 
                 <div>
-                  <div class="wave-box" id="waveBox"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
+                  <div class="wave-box"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
                   <div class="ivr-transcript" id="ivrSpeechText">"Hello Mary. On your phone keypad, press 0 for no nausea, 1 for mild, 2 for moderate, or 3 for severe."</div>
                 </div>
 
@@ -284,7 +286,7 @@
                   <div style="font-size:11.5px; color:var(--ink-muted);">Daily Symptom Intake Form</div>
                 </div>
                 <div id="webFormContent">
-                  <p style="font-size:13px; font-weight:700; margin-bottom:10px;" id="webPrompt">1. How would you rate your nausea today?</p>
+                  <p style="font-size:13px; font-weight:700; margin-bottom:10px;">1. How would you rate your nausea today?</p>
                   <div class="web-card-option" onclick="submitAnswer('nausea','Grade 0 (None)',0)">0 — No Nausea <span>➔</span></div>
                   <div class="web-card-option" onclick="submitAnswer('nausea','Grade 1 (Mild)',8)">1 — Mild Nausea <span>➔</span></div>
                   <div class="web-card-option" onclick="submitAnswer('nausea','Grade 2 (Moderate)',22)">2 — Moderate Nausea <span>➔</span></div>
@@ -353,7 +355,7 @@
       <div class="view-head">
         <p class="eyebrow">TraceLINC Logistics Engine</p>
         <h1 class="view-title">Batched Rural Transportation &amp; SDOH Support</h1>
-        <p class="view-sub">Group rural patients into shared shuttles to eliminate missed oncology appointments.</p>
+        <p class="view-sub">Click any parish node below to highlight its batched shuttle trip.</p>
       </div>
       <div class="linc-grid">
         <div class="card" style="padding:22px;">
@@ -366,18 +368,18 @@
         <div>
           <div class="card" style="padding:20px;">
             <h3 style="margin:0 0 12px; font-size:15px;">Active Scheduled Trips</h3>
-            <div class="trip-list">
-              <div class="trip" data-parish="East Feliciana">
-                <div style="font-weight:600;">East Feliciana → Baton Rouge Hub</div>
-                <div style="font-size:12px; color:var(--ink-faint); margin-top:4px;">Riders: Mary D., Wilson P. · NEMT Shuttle</div>
+            <div class="trip-list" id="tripList">
+              <div class="trip" data-parish="East Feliciana" id="trip-EastFeliciana">
+                <div style="font-weight:700; color:var(--teal-900);">East Feliciana → Baton Rouge Hub</div>
+                <div style="font-size:12px; color:var(--ink-muted); margin-top:4px;">Riders: Mary D., Wilson P. · NEMT Shuttle</div>
               </div>
-              <div class="trip" data-parish="Tensas">
-                <div style="font-weight:600;">Tensas Parish → Baton Rouge Hub</div>
-                <div style="font-size:12px; color:var(--ink-faint); margin-top:4px;">Rider: Odell R. · Medicaid Transit</div>
+              <div class="trip" data-parish="Tensas" id="trip-Tensas">
+                <div style="font-weight:700; color:var(--teal-900);">Tensas Parish → Baton Rouge Hub</div>
+                <div style="font-size:12px; color:var(--ink-muted); margin-top:4px;">Rider: Odell R. · Medicaid Transit</div>
               </div>
-              <div class="trip" data-parish="Beauregard">
-                <div style="font-weight:600;">Beauregard Parish → Baton Rouge Hub</div>
-                <div style="font-size:12px; color:var(--ink-faint); margin-top:4px;">Riders: Angela F., Sam K., Rita M. · NEMT Van</div>
+              <div class="trip" data-parish="Beauregard" id="trip-Beauregard">
+                <div style="font-weight:700; color:var(--teal-900);">Beauregard Parish → Baton Rouge Hub</div>
+                <div style="font-size:12px; color:var(--ink-muted); margin-top:4px;">Riders: Angela F., Sam K., Rita M. · NEMT Van</div>
               </div>
             </div>
           </div>
@@ -426,7 +428,7 @@ let answers = {};
 const questions = [
   { key:'nausea', prompt:"On a scale of 0 to 3, how much nausea are you experiencing today?", ivrSpeech:"Hello Mary, this is your Ochsner check-in. Press 0 for no nausea, 1 for mild, 2 for moderate, or 3 for severe." },
   { key:'fever', prompt:"Have you recorded a fever above 100.4 degrees Fahrenheit today?", ivrSpeech:"Got it. Have you recorded a fever above 100.4 degrees Fahrenheit today? Press 1 for yes, or 0 for no." },
-  { key:'energy', prompt:"Compared to yesterday, how is your energy and appetite?", ivrSpeech:"Final question. How is your overall energy and appetite? Press 0 for normal, 1 for tired, or 2 for severe weakness." }
+  { key:'energy', prompt:"Compared to yesterday, how is your overall energy and appetite?", ivrSpeech:"Final question. How is your overall energy and appetite? Press 0 for normal, 1 for tired, or 2 for severe weakness." }
 ];
 
 const modeBtns = document.querySelectorAll('.mode-btn');
@@ -470,7 +472,7 @@ function submitAnswer(key, label, score){
       if(stepIndex === 1){
         smsBody.innerHTML += `<div class="qr-row"><button class="qr" onclick="submitAnswer('fever','Yes (Fever Present)',30)">Yes (Fever)</button><button class="qr" onclick="submitAnswer('fever','No Fever',0)">No Fever</button></div>`;
       } else if(stepIndex === 2){
-        smsBody.innerHTML += `<div class="qr-row"><button class="qr" onclick="submitAnswer('energy','Normal Energy',0)">Normal</button><button class="qr" onclick="submitAnswer('energy','Very Weak',18)">Severe Weakness</button></div>`;
+        smsBody.innerHTML += `<div class="qr-row"><button class="qr" onclick="submitAnswer('energy','Normal Energy',0)">Normal</button><button class="qr" onclick="submitAnswer('energy','Tired',8)">Tired</button><button class="qr" onclick="submitAnswer('energy','Severe Weakness',18)">Severe Weakness</button></div>`;
       }
     } else if(currentMode === 'ivr'){
       document.getElementById('ivrSpeechText').textContent = `"${nextQ.ivrSpeech}"`;
@@ -479,7 +481,8 @@ function submitAnswer(key, label, score){
       if(stepIndex === 1){
         kp.innerHTML = `<button class="key-btn" onclick="submitAnswer('fever','Key 1 (Fever)',30)">[ 1 ] Yes Fever</button><button class="key-btn" onclick="submitAnswer('fever','Key 0 (No Fever)',0)">[ 0 ] No Fever</button>`;
       } else if(stepIndex === 2){
-        kp.innerHTML = `<button class="key-btn" onclick="submitAnswer('energy','Key 0 (Normal)',0)">[ 0 ] Normal</button><button class="key-btn" onclick="submitAnswer('energy','Key 2 (Severe)',18)">[ 2 ] Severe Weak</button>`;
+        /* FIXED: Added Key 1 Option [1] Tired (+8 pts) */
+        kp.innerHTML = `<button class="key-btn" onclick="submitAnswer('energy','Key 0 (Normal)',0)">[ 0 ] Normal</button><button class="key-btn" onclick="submitAnswer('energy','Key 1 (Tired)',8)">[ 1 ] Tired</button><button class="key-btn" onclick="submitAnswer('energy','Key 2 (Severe)',18)">[ 2 ] Severe Weak</button>`;
       }
     } else if(currentMode === 'web'){
       const form = document.getElementById('webFormContent');
@@ -489,8 +492,9 @@ function submitAnswer(key, label, score){
           <div class="web-card-option" onclick="submitAnswer('fever','No Fever',0)">No Fever <span>➔</span></div>`;
       } else if(stepIndex === 2){
         form.innerHTML = `<p style="font-size:13px; font-weight:700;">3. Rate your energy & intake level:</p>
-          <div class="web-card-option" onclick="submitAnswer('energy','Normal Energy',0)">Normal / Good <span>➔</span></div>
-          <div class="web-card-option" onclick="submitAnswer('energy','Severe Weakness',18)">Severe Weakness <span>➔</span></div>`;
+          <div class="web-card-option" onclick="submitAnswer('energy','Normal Energy',0)">0 — Normal / Good <span>➔</span></div>
+          <div class="web-card-option" onclick="submitAnswer('energy','Tired',8)">1 — Tired <span>➔</span></div>
+          <div class="web-card-option" onclick="submitAnswer('energy','Severe Weakness',18)">2 — Severe Weakness <span>➔</span></div>`;
       }
     }
   } else {
@@ -573,26 +577,48 @@ function showFhirModal(name, trs){
 
 renderQueue();
 
-/* ---------------- Hub Map ---------------- */
+/* ---------------- FIXED: Interactive Map & Click Handling ---------------- */
 function drawHubMap(){
   const map = document.getElementById('hubMap');
   const svg = document.getElementById('routeSvg');
   if(!map || !svg) return;
   const w = map.clientWidth, h = map.clientHeight;
   const cx = w/2, cy = h/2;
-  const parishes = [ {name:'East Feliciana', ang:195}, {name:'Tensas', ang:260}, {name:'Beauregard', ang:330} ];
+  
+  const parishes = [ 
+    {name:'East Feliciana', key:'EastFeliciana', ang:195}, 
+    {name:'Tensas', key:'Tensas', ang:260}, 
+    {name:'Beauregard', key:'Beauregard', ang:330} 
+  ];
+  
   document.querySelectorAll('.parish-node').forEach(n=>n.remove());
   let lines = '';
+  
   parishes.forEach(p => {
     const rad = p.ang * Math.PI/180;
     const x = cx + (w*0.38)*Math.cos(rad);
     const y = cy + (h*0.38)*Math.sin(rad);
-    lines += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#00A896" stroke-width="2" stroke-dasharray="5,5"/>`;
+    lines += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#00A896" stroke-width="2.5" stroke-dasharray="5,5"/>`;
+    
     const node = document.createElement('div');
     node.className = 'parish-node';
-    node.style.left = x + 'px'; node.style.top = y + 'px';
+    node.style.left = x + 'px'; 
+    node.style.top = y + 'px';
     node.style.transform = 'translate(-50%,-50%)';
     node.textContent = p.name;
+    
+    node.onclick = () => {
+      document.querySelectorAll('.parish-node').forEach(n => n.classList.remove('active'));
+      node.classList.add('active');
+      
+      document.querySelectorAll('.trip').forEach(t => t.classList.remove('highlight'));
+      const targetTrip = document.getElementById('trip-' + p.key);
+      if(targetTrip){
+        targetTrip.classList.add('highlight');
+        targetTrip.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    };
+    
     map.appendChild(node);
   });
   svg.innerHTML = lines;
